@@ -1,8 +1,18 @@
-# OIDC Easy Demos
+# OIDC Easy Demo
 
 Fork of <https://github.com/nginxinc/kubernetes-ingress/tree/master/examples-of-custom-resources/oidc>
 
 Find/replace nginx.rocks in all files with your own value.
+
+Added helm, deploy with 
+
+```
+helm repo add nginx-stable https://helm.nginx.com/stable
+helm repo update
+helm install plus nginx-stable/nginx-ingress -f values-plus.yaml
+```
+
+## OIDC Setup
 
 In this example, we deploy a web application, configure load balancing for it via a VirtualServer, and protect the application using an OpenID Connect policy and [Keycloak](https://www.keycloak.org/).
 
