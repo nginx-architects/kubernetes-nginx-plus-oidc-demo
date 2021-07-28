@@ -1,0 +1,43 @@
+controller:
+  nginxplus: true
+  image:
+    repository: gcr.io/f5-gcs-4299-sales-se-nginx/kic-plus-nap
+    tag: "1.12.0"
+  config:
+    entries:
+      resolver-addresses: 10.87.240.10
+      resolver-valid: 5s
+      stream-snippets: |
+        resolver 10.87.240.10 valid=5s;
+        server {
+            listen 12345;
+            zone_sync;
+            zone_sync_server nginx-ingress-headless.nginx-ingress.svc.cluster.local:12345 resolve;
+        }
+  setAsDefaultIngress: true
+  ingressClass: nginx
+  enableCustomResources: true
+  enablePreviewPolicies: true
+  healthStatus: true
+  latency-metrics: true
+  nginxStatus:
+    ## Enable the NGINX stub_status, or the NGINX Plus API.
+    enable: true
+    port: 8080
+    ## Add IPv4 IP/CIDR blocks to the allow list for NGINX stub_status or the NGINX Plus API. Separate multiple IP/CIDR by commas.
+    allowCidrs: "0.0.0.0/0"
+  ## A list of custom ports to expose on the NGINX ingress controller pod. Follows the conventional Kubernetes yaml syntax for container ports.
+  service:
+    customPorts:
+    - name: dashboard
+      targetPort: 8080
+      protocol: TCP
+      port: 8080
+    - name: prometheus
+      targetPort: 9113
+      protocol: TCP
+      port: 9113
+prometheus:
+  create: true
+  scheme: http
+  port: 9113

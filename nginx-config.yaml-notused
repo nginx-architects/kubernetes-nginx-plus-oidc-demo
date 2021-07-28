@@ -1,0 +1,14 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-config
+data:
+  stream-snippets: |
+    resolver 10.87.240.10 valid=5s;
+    server {
+        listen 12345;
+        zone_sync;
+        zone_sync_server nginx-ingress-headless.default.svc.cluster.local:12345 resolve;
+    }
+  resolver-addresses: 10.87.240.10
+  resolver-valid: 5s
