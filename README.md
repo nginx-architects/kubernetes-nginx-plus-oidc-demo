@@ -4,7 +4,7 @@ Fork of <https://github.com/nginxinc/kubernetes-ingress/tree/master/examples-of-
 
 Find/replace nginx.rocks in all files with your own value.
 
-I use helm to deploy KIC. Update [values-plus.yaml] with your repo.
+I use helm to deploy KIC. Update [values-plus.yaml](values-plus.yaml) with your repo.
 
 ```
 helm repo add nginx-stable https://helm.nginx.com/stable
