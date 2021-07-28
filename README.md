@@ -1,6 +1,10 @@
 # OIDC Easy Demo
 
-Fork of <https://github.com/nginxinc/kubernetes-ingress/tree/master/examples-of-custom-resources/oidc>
+All the steps are automated in: [01-install-script.sh](01-install-script.sh)
+
+This is a fork of: <https://github.com/nginxinc/kubernetes-ingress/tree/master/examples-of-custom-resources/oidc>
+
+## Manual Steps
 
 Find/replace nginx.rocks in all files with your own value.
 
@@ -9,9 +13,10 @@ I use helm to deploy KIC. Update [values-plus.yaml](values-plus.yaml) with your 
 ```
 helm repo add nginx-stable https://helm.nginx.com/stable
 helm repo update
-helm install plus nginx-stable/nginx-ingress -f values-plus.yaml
+helm install plus nginx-stable/nginx-ingress -f values-plus.yaml --namespace nginx-ingress --create-namespace
 ```
 
+Then follow the instructions from the fork:
 ## OIDC Setup
 
 In this example, we deploy a web application, configure load balancing for it via a VirtualServer, and protect the application using an OpenID Connect policy and [Keycloak](https://www.keycloak.org/).

@@ -5,10 +5,10 @@ controller:
     tag: "1.12.0"
   config:
     entries:
-      resolver-addresses: 10.87.240.10
+      resolver-addresses: kube-dns-ip
       resolver-valid: 5s
       stream-snippets: |
-        resolver 10.87.240.10 valid=5s;
+        resolver kube-dns-ip valid=5s;
         server {
             listen 12345;
             zone_sync;

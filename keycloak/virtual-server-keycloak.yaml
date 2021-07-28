@@ -2,6 +2,7 @@ apiVersion: k8s.nginx.org/v1
 kind: VirtualServer
 metadata:
   name: keycloak
+  namespace: keycloak
 spec:
   host: keycloak.nginx.rocks
   tls:

@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: keycloak
+  namespace: keycloak
   labels:
     app: keycloak
 spec:
@@ -16,7 +17,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: keycloak
-  namespace: default
+  namespace: keycloak
   labels:
     app: keycloak
 spec:
@@ -48,3 +49,4 @@ spec:
           httpGet:
             path: /auth/realms/master
             port: 8080
+        resources: {}

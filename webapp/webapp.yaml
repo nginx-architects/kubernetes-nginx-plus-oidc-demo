@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: webapp
+  namespace: webapp
 spec:
   replicas: 1
   selector:
@@ -20,15 +21,17 @@ spec:
         volumeMounts:
           - name: config-volume
             mountPath: /etc/nginx/conf.d
+        resources: {}
       volumes:
         - name: config-volume
           configMap:
-            name: oidc-config
+            name: webapp-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: webapp-svc
+  namespace: webapp
 spec:
   ports:
   - port: 80
@@ -41,7 +44,8 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: oidc-config
+  name: webapp-config
+  namespace: webapp
 data:
   app.conf: |-
     server {
