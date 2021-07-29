@@ -1,6 +1,6 @@
 # OIDC Easy Demo
 
-All the steps are automated in: [01-install-script.sh](01-install-script.sh)
+The easy demo is built on GCP to create DNS records and use valid TLS certs, though that is not required. For GCP, all the steps are automated in: [01-install-script.sh](01-install-script.sh)
 
 This is a fork of: <https://github.com/nginxinc/kubernetes-ingress/tree/master/examples-of-custom-resources/oidc>
 
