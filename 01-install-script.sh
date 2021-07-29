@@ -1,6 +1,8 @@
 #!/bin/bash
 set -xe
 
+# create a cluster, if you need one: gcloud container clusters create jesse-gke5 --num-nodes=1
+
 # get kube-dns clusterIP
 KUBEDNS=`kubectl get svc kube-dns -n kube-system -o jsonpath={.spec.clusterIP}`
 sed -i "s/kube-dns-ip/$KUBEDNS/g" ./values-plus.yaml

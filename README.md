@@ -2,6 +2,8 @@
 
 The easy demo is built on GCP to create DNS records and use valid TLS certs, though that is not required. For GCP, all the steps are automated in: [01-install-script.sh](01-install-script.sh)
 
+You would like to use a gcp cluster, run something like this: `gcloud container clusters create jesse-gke5 --num-nodes=1`
+
 This is a fork of: <https://github.com/nginxinc/kubernetes-ingress/tree/master/examples-of-custom-resources/oidc>
 
 ## Manual Steps
