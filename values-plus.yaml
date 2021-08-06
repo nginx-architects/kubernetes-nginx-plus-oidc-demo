@@ -18,6 +18,7 @@ controller:
   ingressClass: nginx
   enableCustomResources: true
   enablePreviewPolicies: true
+  enableSnippets: true
   healthStatus: true
   latency-metrics: true
   nginxStatus:
