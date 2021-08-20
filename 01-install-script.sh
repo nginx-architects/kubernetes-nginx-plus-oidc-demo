@@ -39,6 +39,7 @@ gcloud dns record-sets \
     --rrdatas="$EXTERNALIP" \
     --type=A --ttl=30 --zone=nginx-rocks
 
+kubectl apply -f ./nginx-ingress-headless.yaml
 kubectl apply -f ./keycloak
 KEYCLOAK_ADDRESS=keycloak.nginx.rocks
 
