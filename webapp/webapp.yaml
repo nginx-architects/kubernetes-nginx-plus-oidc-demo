@@ -15,13 +15,19 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: nginxdemos/nginx-hello:plain-text
+        image: nginxinc/nginx-unprivileged
         ports:
         - containerPort: 8080
         volumeMounts:
           - name: config-volume
             mountPath: /etc/nginx/conf.d
-        resources: {}
+        resources:
+          limits:
+            cpu: "1"
+            memory: "100Mi"
+          requests:
+            cpu: "0.1"
+            memory: "20Mi"
       volumes:
         - name: config-volume
           configMap:
@@ -54,6 +60,6 @@ data:
     location / {
         default_type text/plain;
         expires -1;
-        return 200 'Server address: $server_addr:$server_port\nServer name: $hostname\nDate: $time_local\nURI: $request_uri\nRequest ID: $request_id\nUser ID: $http_username\n';
+        return 200 'Server address: $server_addr:$server_port\nServer name: $hostname\nDate: $time_local\nURI: $request_uri\nRequest ID: $request_id\nHost header: $Host\nUser ID: $http_username\n';
       }
     }
