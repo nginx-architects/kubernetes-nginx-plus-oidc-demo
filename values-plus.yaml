@@ -4,6 +4,7 @@ controller:
     repository: us-central1-docker.pkg.dev/f5-gcs-4299-sales-se-nginx/central1/nginx-plus-ingress
     tag: 2.0.2-ubi-nap
   serviceAccount:
+    # name: nginx-ingress
     imagePullSecretName: gcp-pkg-json-key
   setAsDefaultIngress: true
   ingressClass: nginx
