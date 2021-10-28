@@ -2,7 +2,9 @@ controller:
   nginxplus: true
   image:
     repository: us-central1-docker.pkg.dev/f5-gcs-4299-sales-se-nginx/central1/nginx-plus-ingress
-    tag: 2.0.0-ubi
+    tag: 2.0.2-ubi-nap
+  serviceAccount:
+    imagePullSecretName: gcp-pkg-json-key
   setAsDefaultIngress: true
   ingressClass: nginx
   enableCustomResources: true
@@ -43,7 +45,12 @@ controller:
       # for debugging
       error-log-level: info
       # plus level logging:
-      log-format: '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for" rn="$resource_name" "$resource_type" "$resource_namespace" svc="$service" "$request_id" rt=“$request_time” ua=“$upstream_addr” uct="$upstream_connect_time" uht="$upstream_header_time" urt="$upstream_response_time" uqt=“$upstream_queue_time“ cs=“$upstream_cache_status“'
+      log-format: |-
+        $remote_addr - $remote_user [$time_local] $Host $request $status $body_bytes_sent $http_referer 
+        $http_user_agent $http_x_forwarded_for rn=$resource_name $resource_type $resource_namespace 
+        svc=$service $request_id rt=“$request_time” ua=“$upstream_addr” uct=$upstream_connect_time 
+        uht=$upstream_header_time urt=$upstream_response_time uqt=“$upstream_queue_time“ 
+        cs=“$upstream_cache_status“
 prometheus:
   create: true
   scheme: http
