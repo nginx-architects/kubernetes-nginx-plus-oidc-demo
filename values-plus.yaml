@@ -1,33 +1,30 @@
 controller:
   nginxplus: true
   image:
-    repository: gcr.io/f5-gcs-4299-sales-se-nginx/kic-plus-nap
-    tag: "1.12.0"
-  config:
-    entries:
-      resolver-addresses: kube-dns-ip
-      resolver-valid: 5s
-      stream-snippets: |
-        resolver kube-dns-ip valid=5s;
-        server {
-            listen 12345;
-            zone_sync;
-            zone_sync_server nginx-ingress-headless.nginx-ingress.svc.cluster.local:12345 resolve;
-        }
+    repository: us-central1-docker.pkg.dev/f5-gcs-4299-sales-se-nginx/central1/nginx-plus-ingress
+    tag: 2.0.2-ubi-nap
+  serviceAccount:
+    imagePullSecretName: gcp-pkg-json-key
   setAsDefaultIngress: true
   ingressClass: nginx
   enableCustomResources: true
   enablePreviewPolicies: true
+  enableSnippets: true
+  appprotect:
+    ## Enable the App Protect module in the Ingress Controller.
+    enable: false
   healthStatus: true
-  latency-metrics: true
+  enableLatencyMetrics: true
   nginxStatus:
     ## Enable the NGINX stub_status, or the NGINX Plus API.
     enable: true
     port: 8080
-    ## Add IPv4 IP/CIDR blocks to the allow list for NGINX stub_status or the NGINX Plus API. Separate multiple IP/CIDR by commas.
+    ## Add IPv4 IP/CIDR blocks to the allow list for the NGINX Plus API. Separate multiple IP/CIDR by commas.
     allowCidrs: "0.0.0.0/0"
-  ## A list of custom ports to expose on the NGINX ingress controller pod. Follows the conventional Kubernetes yaml syntax for container ports.
   service:
+    extraLabels:
+      # needs to match ServiceMonitor matchLabels
+      app: nginx-ingress-controller
     customPorts:
     - name: dashboard
       targetPort: 8080
@@ -37,6 +34,23 @@ controller:
       targetPort: 9113
       protocol: TCP
       port: 9113
+  config:
+    entries:
+      resolver-addresses: kube-dns.kube-system.svc.cluster.local
+      #http2 disabled by default, required for grpc
+      http2: "true"
+      resolver-valid: 5s
+      # smarter LB method:
+      lb-method: "least_time last_byte"
+      # for debugging
+      error-log-level: info
+      # plus level logging:
+      log-format: |-
+        $remote_addr - $remote_user [$time_local] $Host $request $status $body_bytes_sent $http_referer 
+        $http_user_agent $http_x_forwarded_for rn=$resource_name $resource_type $resource_namespace 
+        svc=$service $request_id rt=“$request_time” ua=“$upstream_addr” uct=$upstream_connect_time 
+        uht=$upstream_header_time urt=$upstream_response_time uqt=“$upstream_queue_time“ 
+        cs=“$upstream_cache_status“
 prometheus:
   create: true
   scheme: http

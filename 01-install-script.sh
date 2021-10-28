@@ -4,8 +4,6 @@ set -xe
 # create a cluster, if you need one: gcloud container clusters create jesse-gke5 --num-nodes=1
 
 # get kube-dns clusterIP
-KUBEDNS=`kubectl get svc kube-dns -n kube-system -o jsonpath={.spec.clusterIP}`
-sed -i "s/kube-dns-ip/$KUBEDNS/g" ./values-plus.yaml
 
 # install kic 
 helm repo add nginx-stable https://helm.nginx.com/stable
@@ -39,6 +37,7 @@ gcloud dns record-sets \
     --rrdatas="$EXTERNALIP" \
     --type=A --ttl=30 --zone=nginx-rocks
 
+kubectl apply -f ./nginx-ingress-headless.yaml
 kubectl apply -f ./keycloak
 KEYCLOAK_ADDRESS=keycloak.nginx.rocks
 
@@ -62,7 +61,7 @@ echo $SECRET
 echo "client secret:"
 echo -n $SECRET|base64
 SECRETB64=`echo -n $SECRET|base64`
-sed -i "s/SECRETKEY/$SECRETB64/g" ./webapp/oidc.yaml
+sed -i -e "s/SECRETKEY/$SECRETB64/g" ./webapp/oidc.yaml
 
 # create the app and oidc config
 kubectl apply -f ./webapp
